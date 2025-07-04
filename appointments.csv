@@ -1,0 +1,5 @@
+age,gender,past_no_shows,appointment_type,lead_time_days,weather,appointment_day,no_show
+25,Male,1,consult,5,clear,2023-04-10,0
+40,Female,0,follow-up,10,rain,2023-04-12,1
+55,Male,2,checkup,3,snow,2023-04-15,0
+30,Female,0,consult,7,clear,2023-04-20,1
