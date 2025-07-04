@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 
 st.set_page_config(page_title="No-Show Predictor Dashboard", layout="wide")
-st.title("📅 Patient No-Show Prediction Dashboard")
+st.title("📅 Appointment No-Show Prediction")
 
 # Load data
 df = pd.read_csv("predictions.csv")
