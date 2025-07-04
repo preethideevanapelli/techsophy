@@ -12,9 +12,21 @@ df['appointment_day'] = pd.to_datetime(df['appointment_day'])
 # Filters
 risk_range = st.slider("Filter by No-Show Risk Probability", 0.0, 1.0, (0.5, 1.0), 0.01)
 
-appt_types = st.multiselect("Appointment Types",
-                            options=df['appointment_type'].unique(),
-                            default=df['appointment_type'].unique())
+appt_type_map = {
+    0: "Consultation",
+    1: "Lab Test",
+    2: "Follow-up"
+}
+df['appointment_type'] = df['appointment_type'].map(appt_type_map)
+
+# Now you can use appointment_type as strings in filters and display
+appt_types = st.multiselect(
+    "Appointment Types",
+    options=df['appointment_type'].unique(),
+    default=df['appointment_type'].unique()
+)
+
+filtered_df = df[df['appointment_type'].isin(appt_types)]
 
 seasons = st.multiselect("Seasons",
                          options=df['season'].unique(),
