@@ -28,9 +28,20 @@ appt_types = st.multiselect(
 
 filtered_df = df[df['appointment_type'].isin(appt_types)]
 
-seasons = st.multiselect("Seasons",
-                         options=df['season'].unique(),
-                         default=df['season'].unique())
+season_map = {
+    0: "Winter",
+    1: "Spring",
+    2: "Summer",
+    3: "Fall"
+}
+df['season'] = df['season'].astype(int).map(season_map)
+
+seasons = st.multiselect(
+    "Seasons",
+    options=df['season'].unique(),
+    default=df['season'].unique()
+)
+
 
 date_range = st.date_input("Filter by Appointment Date Range",
                            [df['appointment_day'].min(), df['appointment_day'].max()])
