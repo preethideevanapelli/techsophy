@@ -9,9 +9,7 @@ st.title("📅 Patient No-Show Prediction")
 df = pd.read_csv("predictions.csv")
 df['appointment_day'] = pd.to_datetime(df['appointment_day'])
 
-# Filters
-risk_range = st.slider("Filter by No-Show Risk Probability", 0.0, 1.0, (0.5, 1.0), 0.01)
-
+# Map appointment types
 appt_type_map = {
     0: "Consultation",
     1: "Lab Test",
@@ -19,33 +17,43 @@ appt_type_map = {
 }
 df['appointment_type'] = df['appointment_type'].map(appt_type_map)
 
-# Now you can use appointment_type as strings in filters and display
-appt_types = st.multiselect(
-    "Appointment Types",
-    options=df['appointment_type'].unique(),
-    default=df['appointment_type'].unique()
-)
-
-filtered_df = df[df['appointment_type'].isin(appt_types)]
-
+# Map seasons
 season_map = {
     0: "Winter",
-    1: "Spring",
-    2: "Summer",
-    3: "Fall"
+    1: "Early Spring",
+    2: "Late Spring",
+    3: "Summer",
+    4: "Monsoon",
+    5: "Fall",
+    6: "Late Fall"
 }
 df['season'] = df['season'].astype(int).map(season_map)
 
-seasons = st.multiselect(
-    "Seasons",
-    options=df['season'].unique(),
-    default=df['season'].unique()
+# Filters
+risk_range = st.slider("Filter by No-Show Risk Probability", 0.0, 1.0, (0.5, 1.0), 0.01)
+
+# Always show all appointment types regardless of data content
+all_appt_types = list(appt_type_map.values())
+
+appt_types = st.multiselect(
+    "Appointment Types",
+    options=all_appt_types,
+    default=all_appt_types
 )
 
+# Always show all seasons regardless of data content
+all_seasons = list(season_map.values())
+
+seasons = st.multiselect(
+    "Seasons",
+    options=all_seasons,
+    default=all_seasons
+)
 
 date_range = st.date_input("Filter by Appointment Date Range",
                            [df['appointment_day'].min(), df['appointment_day'].max()])
 
+# Filter dataframe with applied filters
 filtered_df = df[
     (df['no_show_prob'].between(risk_range[0], risk_range[1])) &
     (df['appointment_type'].isin(appt_types)) &
